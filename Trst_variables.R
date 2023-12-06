@@ -4,8 +4,8 @@ library(data.table)
 library(tidyr)
 
 load("ESS_2018_CH.Rda")
-ess <- ESS_2018_CH
-de <- ESS_2018_CH %>%
+ess <- ESS9
+de <- ESS9 %>%
   filter(cntry == "DE")
 
 plt <- ess$trstplt
