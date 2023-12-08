@@ -1,16 +1,16 @@
 library(dplyr)
 library(tidyverse)
-library(data.table)
 library(tidyr)
 
 load("ESS_2018_CH.Rda")
 ess <- ESS9
 de <- ESS9 %>%
-  filter(cntry == "DE")
+  filter(cntry == "DE") %>%
+  filter(agea >= 18)
 
-plt <- ess$trstplt
-prt <- ess$trstprt
-prl <- ess$trstprl
+plt <- de$trstplt
+prt <- de$trstprt
+prl <- de$trstprl
 
 trst <- data.frame(TrstPrl = prl, TrstPlt = plt, TrstPrt = prt)
 
