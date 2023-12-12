@@ -33,3 +33,4 @@ ggplot(by_polintr, aes(x=polintr, y=meanTrstlgl)) + geom_col() +
 # 5. trust in police
 ggplot(by_polintr, aes(x=polintr, y=meanTrstplc)) + geom_col() +
   labs(title="Trust in police")
+
