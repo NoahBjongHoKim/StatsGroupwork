@@ -8,7 +8,8 @@ library(ltm)
 # N for East_Ger: 376
 # N for Berlin: 90
 
-setwd('/Users/noahkim/Documents/Studium/ISTP/Stats 1/Groupwork/StatsGroupwork/')
+#setwd('/Users/noahkim/Documents/Studium/ISTP/Stats 1/Groupwork/StatsGroupwork/')
+setwd('/Users/max/Documents/ETHZ/MSc_STP/Statistics_I/Project/StatsGroupwork2/StatsGroupwork')
 directory <- getwd()
 
 #filter data and create datasets East_Ger, West_Ger and Berlin
@@ -144,6 +145,7 @@ Whole_DE_filt_trust <- Whole_DE_filt_trust %>%
 East_DE_filt_trust <- Whole_DE_filt_trust %>% filter(EastWest == "East")
 West_DE_filt_trust <- Whole_DE_filt_trust %>% filter(EastWest == "West")
 Berlin_DE_filt_trust <- Whole_DE_filt_trust %>% filter(EastWest == "Berlin")
+West_Berlin_DE_filt_trust <- Whole_DE_filt_trust %>% filter(EastWest == "West" | EastWest == "Berlin")
 
 ############################# Distribution histograms/stats
 # # Plot distributions of the individual and stacked trust variables
@@ -162,4 +164,18 @@ Berlin_DE_filt_trust <- Whole_DE_filt_trust %>% filter(EastWest == "Berlin")
 # plot_scatterplots(Whole_DE_filt_trust, "Whole Germany")
 
 ############################# Regression
+
+############################# Cronbach's alpha
+trust_var_all <- Whole_DE_filt_trust %>% dplyr::select(trstplt, trstprl, trstprt)
+trust_var_East <- East_DE_filt_trust %>% dplyr::select(trstplt, trstprl, trstprt)
+trust_var_West <- West_DE_filt_trust %>% dplyr::select(trstplt, trstprl, trstprt)
+trust_var_Berlin <- Berlin_DE_filt_trust %>% dplyr::select(trstplt, trstprl, trstprt)
+trust_var_West_Berlin <- West_Berlin_DE_filt_trust %>% dplyr::select(trstplt, trstprl, trstprt)
+print("Cronbach's alpha:")
+cat("Whole DE: ", cronbach.alpha(trust_var_all)$alpha)
+cat("East: ", cronbach.alpha(trust_var_East)$alpha)
+cat("West: ", cronbach.alpha(trust_var_West)$alpha)
+cat("Berlin: ", cronbach.alpha(trust_var_Berlin)$alpha)
+cat("West and Berlin: ", cronbach.alpha(trust_var_West_Berlin)$alpha)
+
 
