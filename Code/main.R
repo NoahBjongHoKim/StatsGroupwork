@@ -8,7 +8,7 @@ library(ltm)
 # N for East_Ger: 376
 # N for Berlin: 90
 
-setwd('/Users/noahkim/Documents/Studium/ISTP/Stats 1/Groupwork/StatsGroupwork/')
+setwd('C:/Users/manth/GitHub/StatsGroupwork')
 directory <- getwd()
 
 #filter data and create datasets East_Ger, West_Ger and Berlin
