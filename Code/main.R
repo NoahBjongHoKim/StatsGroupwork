@@ -8,7 +8,8 @@ library(ltm)
 # N for East_Ger: 376
 # N for Berlin: 90
 
-setwd('/Users/noahkim/Documents/Studium/ISTP/Stats 1/Groupwork/StatsGroupwork/')
+#setwd('/Users/noahkim/Documents/Studium/ISTP/Stats 1/Groupwork/StatsGroupwork/')
+setwd('/Users/max/Documents/ETHZ/MSc_STP/Statistics_I/Project/StatsGroupwork2/StatsGroupwork')
 directory <- getwd()
 
 #filter data and create datasets East_Ger, West_Ger and Berlin
@@ -66,12 +67,17 @@ plot_distribution_histograms <- function(dataframe, name_index) {
   ggplot(filtered_dataframe_long, aes(x = Response, fill = Variable)) +
     geom_bar(aes(fill = Variable)) +
     scale_fill_manual(values = custom_colors, labels = custom_labels) +
-    labs(title = paste0("Distribution of responses to questions of trust in government, c_alpha =",c_alpha),
+    # labs(title = paste0("Distribution of responses to questions of trust in government, c_alpha =",c_alpha),
+    #      x = "Response",
+    #      y = "Count") +
+    labs(title = "Total trust in Government",
          x = "Response",
          y = "Count") +
     theme(axis.text=element_text(size=20),
           axis.title = element_text(size=20),
-          plot.title = element_text(size=24))
+          plot.title = element_text(size=24),
+          legend.text=element_text(size=20), #change font size of legend text
+          legend.title=element_text(size=20)) #change font size of legend title)
   file_name = paste0(file_directory,"Total Trust ",name_index,".png" )
   ggsave(file_name, width = 8, height = 5)
   }
@@ -206,5 +212,27 @@ cat("East: ", cronbach.alpha(trust_var_East)$alpha)
 cat("West: ", cronbach.alpha(trust_var_West)$alpha)
 cat("Berlin: ", cronbach.alpha(trust_var_Berlin)$alpha)
 cat("West and Berlin: ", cronbach.alpha(trust_var_West_Berlin)$alpha)
+
+########################## Plot total trust vs polintr
+East_by_polintr <- East_DE_filt_trust %>%
+  group_by(polintr) %>% 
+  summarize(meanAverageTrust = mean(mean_trust))
+West_Berlin_by_polintr <- West_Berlin_DE_filt_trust %>%
+  group_by(polintr) %>% 
+  summarize(meanAverageTrust = mean(mean_trust))
+ggplot(East_by_polintr, aes(x = polintr, y = meanAverageTrust)) +
+  geom_col() +
+  labs(title ='East Germany' , x = 'Interest in Politics', y = 'Mean of Average Trust') +
+  theme(axis.text=element_text(size=20),
+        axis.title = element_text(size=20),
+        plot.title = element_text(size=24))  # Adjust the size range as needed
+  
+ggplot(West_Berlin_by_polintr, aes(x = polintr, y = meanAverageTrust)) +
+  geom_col() +
+  labs(title ='West Germany and Berlin' , x = 'Interest in Politics', y = 'Mean of Average Trust') +
+  theme(axis.text=element_text(size=20),
+      axis.title = element_text(size=20),
+      plot.title = element_text(size=24))  # Adjust the size range as needed
+  
 
 
