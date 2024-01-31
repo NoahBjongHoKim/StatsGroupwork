@@ -4,19 +4,14 @@ library(tidyr)
 library(ltm)
 library(patchwork)
 
+
 #filter data and create datasets East_Ger, West_Ger and Berlin
 source('Code/filter_Data.R')
 
-# N for DE: 2358
-# N >= 18: 2273
-# N for West_Ger: 1807
-# N for East_Ger: 376
-# N for Berlin: 90
+### Trust variable distribution ###
 
 # We can filter out all the rows which have one or more NaNs in trstplr, trstplt, trstprt
 filt_trust <- Data_DE %>% filter_at(vars(trstprl, trstplt, trstprt), all_vars(!is.na(.)))
-
-### Trust variable distribution ###
 
 #Create regional Subsets
 East_DE_filt_trust <- Whole_DE_filt_trust %>% filter(EastWest == "East")
@@ -53,8 +48,28 @@ Stat_Trust_West <- West_Berlin_DE_filt_trust %>%
 #Print descriptive stat Trust
 print(Stat_Trust_East)
 print(Stat_Trust_West)
-
-#Plot distribtion
+#Plot Trust
+# p1 = ggplot(East_DE_filt_trust, aes(x = factor(trstplt))) +
+#   geom_bar(aes(y = after_stat(count)/sum(after_stat(count))), fill = "gray85") +
+#   ylim(0,0.25) +
+#   #geom_vline(xintercept = Stat_Trust_East$median_AverageTrust, color = 'black') +
+#   geom_vline(aes(xintercept = Stat_Trust_East$mean_AverageTrust + 1), color = 'black', linetype = 'dashed') +
+#   annotate("text", x = 5, y = 0.24, label = "mean = 3.85", vjust = 0, hjust = 0) +
+#   labs(title = "East",
+#        x = "Trust in government",
+#        y = "Frequency") +
+#   theme_bw()
+# p2 = ggplot(West_Berlin_DE_filt_trust, aes(x = factor(trstplt))) +
+#   geom_bar(aes(y = after_stat(count)/sum(after_stat(count))), fill = "gray50") +
+#   ylim(0,0.25) +
+#   #geom_vline(xintercept = Stat_Trust_West$median_AverageTrust, color = 'black') +
+#   geom_vline(aes(xintercept = Stat_Trust_West$mean_AverageTrust + 1), color = 'black', linetype = 'dashed') +
+#   annotate("text", x = 6, y = 0.24, label = "mean = 4.60", vjust = 0, hjust = 0) +
+#   labs(title = "West and Berlin",
+#        x = "Trust in government",
+#        y = NULL) +
+#   theme_bw()
+# p1 + p2
 
 p1 = ggplot(East_DE_filt_trust, aes(x = mean_trust)) +
   geom_histogram(aes(y = after_stat(density)), binwidth = 1, fill = "gray85") +
@@ -77,6 +92,9 @@ p2 = ggplot(West_Berlin_DE_filt_trust, aes(x = mean_trust)) +
        y = NULL) +
   theme_bw()
 p1 + p2
+
+
+
 
 
 ### Political interest distribution ###
@@ -118,8 +136,8 @@ p3 = ggplot(East_DE_filt_polintr, aes(x = factor(polintr))) +
   ylim(0,0.5) +
   annotate("text", x = 3.75, y = 0.47, label = "mean = 2.89") +
   labs(title = "East",
-       x = "Interest in politics",
-       y = "Frequency") +
+     x = "Interest in politics",
+     y = "Frequency") +
   theme_bw()
 
 p4 = ggplot(West_DE_filt_polintr, aes(x = factor(polintr))) +
@@ -155,6 +173,11 @@ West_Berlin_DE_filt_trust <- West_Berlin_DE_filt_trust %>%
   ))
 
 
+
+
+
+#Plot mean_trust vs polintr
+
 #linear models
 lm1_East = lm(mean_trust ~ polintr, East_DE_filt_trust)
 lm1_West = lm(mean_trust ~ polintr, West_Berlin_DE_filt_trust)
@@ -186,3 +209,20 @@ print(sqrt(summary(lm3_West)$r.squared))
 
 print(summary(lm4_West)$coefficients)
 print(sqrt(summary(lm4_West)$r.squared))
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+# theme(axis.text=element_text(size=20),
+# axis.title = element_text(size=20),
+# plot.title = element_text(size=24)) +
